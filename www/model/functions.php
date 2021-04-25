@@ -140,4 +140,23 @@ function is_valid_upload_image($image){
   return true;
 }
 
-a;
+// 特殊文字をHTMLエンティティに変換
+function entity_str($str){
+  return  htmlspecialchars($str,ENT_QUOTES,'UTF-8');
+}
+
+// 特殊文字をHTMLエンティティに変換(商品は二次元配列の為、
+// 一次元配列の値のみを取り出して変換する)
+function entity_change($two_array) {
+  // 二次元配列を一次元配列にする
+  foreach ($two_array as $key => $value) {
+    // 一次元配列の値のみを取り出す	  
+    foreach ($value as $keys => $values) {
+      // 特殊文字をHTMLエンティティに変換
+      $two_array[$key][$keys] = entity_str($values);
+    }
+  }
+
+  return $two_array;
+}
+

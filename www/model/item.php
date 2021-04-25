@@ -149,8 +149,9 @@ function delete_item($db, $item_id){
 
 // 非DB
 
+// カートテーブルの商品データを入れたら公開ステータスが1かどうかを判定
 function is_open($item){
-  return $item['status'] === 1;
+  return $item['status'] == 1;
 }
 
 function validate_item($name, $price, $stock, $filename, $status){

@@ -17,6 +17,8 @@ $db = get_db_connect();
 $user = get_login_user($db);
 // 公開ステータスの商品を取得
 $items = get_open_items($db);
+// 特殊文字をHTMLエンティティにする
+$items = entity_change($items);
 
 // パスを指定して商品一覧ページのファイルを読み込む
 include_once VIEW_PATH . 'index_view.php';
