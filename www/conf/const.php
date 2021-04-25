@@ -1,5 +1,5 @@
 <?php
-
+// $_SERVER['DOCUMENT_ROOT']にはドキュメントルートに設定されている'/var/www/html'が入っている
 define('MODEL_PATH', $_SERVER['DOCUMENT_ROOT'] . '/../model/');
 define('VIEW_PATH', $_SERVER['DOCUMENT_ROOT'] . '/../view/');
 

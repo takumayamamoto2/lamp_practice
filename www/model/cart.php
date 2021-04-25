@@ -2,6 +2,7 @@
 require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'db.php';
 
+// ユーザーIDを紐付けてカートテーブルの内容を取得
 function get_user_carts($db, $user_id){
   $sql = "
     SELECT

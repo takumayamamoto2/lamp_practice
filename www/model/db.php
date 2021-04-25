@@ -16,6 +16,7 @@ function get_db_connect(){
   return $dbh;
 }
 
+// sqlを実行して一行のみ取得
 function fetch_query($db, $sql, $params = array()){
   try{
     $statement = $db->prepare($sql);
@@ -27,6 +28,7 @@ function fetch_query($db, $sql, $params = array()){
   return false;
 }
 
+// sqlを実行して全行取得
 function fetch_all_query($db, $sql, $params = array()){
   try{
     $statement = $db->prepare($sql);
@@ -38,6 +40,7 @@ function fetch_all_query($db, $sql, $params = array()){
   return false;
 }
 
+// sqlを実行（取得なし）
 function execute_query($db, $sql, $params = array()){
   try{
     $statement = $db->prepare($sql);

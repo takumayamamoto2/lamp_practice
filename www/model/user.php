@@ -2,6 +2,7 @@
 require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'db.php';
 
+// user_idからユーザーデータを取り出す（最大値一行）
 function get_user($db, $user_id){
   $sql = "
     SELECT
@@ -15,10 +16,11 @@ function get_user($db, $user_id){
       user_id = {$user_id}
     LIMIT 1
   ";
-
+  // sql文で取得した値を返す
   return fetch_query($db, $sql);
 }
 
+// 名前からユーザーデータを取り出す（最大値一行）
 function get_user_by_name($db, $name){
   $sql = "
     SELECT
@@ -32,22 +34,24 @@ function get_user_by_name($db, $name){
       name = '{$name}'
     LIMIT 1
   ";
-
+  // sql文で取得した値を返す
   return fetch_query($db, $sql);
 }
 
+// データベースから取り出したユーザーデータが無ければfalse、パスワードが違っていればfalse。
 function login_as($db, $name, $password){
   $user = get_user_by_name($db, $name);
   if($user === false || $user['password'] !== $password){
     return false;
   }
+  // user_idの名前でセッション変数にuser_id(データベースから取得したもの)を格納
   set_session('user_id', $user['user_id']);
   return $user;
 }
-
+// ログインユーザーのuser_idを使ってユーザーデータを取り出す
 function get_login_user($db){
   $login_user_id = get_session('user_id');
-
+  // データベースからユーザーデータを返す
   return get_user($db, $login_user_id);
 }
 

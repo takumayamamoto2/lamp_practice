@@ -22,6 +22,7 @@ function get_item($db, $item_id){
   return fetch_query($db, $sql);
 }
 
+// 商品データを取得（第２引数にtrueが入ってくれば公開商品のみを指定）
 function get_items($db, $is_open = false){
   $sql = '
     SELECT
@@ -34,12 +35,13 @@ function get_items($db, $is_open = false){
     FROM
       items
   ';
+  // $is_openがtrueなら公開商品のみを指定
   if($is_open === true){
     $sql .= '
       WHERE status = 1
     ';
   }
-
+  // データベースから取得した結果を返す
   return fetch_all_query($db, $sql);
 }
 
@@ -47,6 +49,7 @@ function get_all_items($db){
   return get_items($db);
 }
 
+// データベースが確立していれば、取得した公開ステータスの商品データを返す
 function get_open_items($db){
   return get_items($db, true);
 }

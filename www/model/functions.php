@@ -4,7 +4,7 @@ function dd($var){
   var_dump($var);
   exit();
 }
-
+// 指定のページへ飛ばす
 function redirect_to($url){
   header('Location: ' . $url);
   exit;
@@ -31,13 +31,18 @@ function get_file($name){
   return array();
 }
 
+// useridを入れたら$_SESSIONのセットを返す
 function get_session($name){
+  // user_idが$_SESSIONに入っているかどうかを確認
   if(isset($_SESSION[$name]) === true){
+    // user_idがセットされているセッションを返す
     return $_SESSION[$name];
   };
+  // $_SESSIONの中身が無かったら空文字を返す
   return '';
 }
 
+// 名前とuser_id(データベースから取り出したもの)を入れるとセッションにuser_idをセットする
 function set_session($name, $value){
   $_SESSION[$name] = $value;
 }
@@ -71,7 +76,7 @@ function get_messages(){
   set_session('__messages',  array());
   return $messages;
 }
-
+// ログイン状態を確認
 function is_logined(){
   return get_session('user_id') !== '';
 }
@@ -135,3 +140,4 @@ function is_valid_upload_image($image){
   return true;
 }
 
+d;
