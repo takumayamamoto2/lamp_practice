@@ -96,7 +96,7 @@ function update_item_status($db, $item_id, $status){
     UPDATE
       items
     SET
-      status = {?}
+      status = {$status}
     WHERE
       item_id = {$item_id}
     LIMIT 1
@@ -110,13 +110,13 @@ function update_item_stock($db, $item_id, $stock){
     UPDATE
       items
     SET
-      stock = {$stock}
+      stock = {?}
     WHERE
-      item_id = {$item_id}
+      item_id = {?}
     LIMIT 1
   ";
   
-  return execute_query($db, $sql);
+  return execute_query_item_stock($db, $sql);
 }
 
 function destroy_item($db, $item_id){
