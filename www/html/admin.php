@@ -19,4 +19,7 @@ if(is_admin($user) === false){
 }
 
 $items = get_all_items($db);
+
+// 特殊文字をHTMLエンティティにする
+$items = entity_change($items);
 include_once VIEW_PATH . '/admin_view.php';

@@ -101,8 +101,9 @@ function delete_cart($db, $cart_id){
 
   return execute_query($db, $sql);
 }
-
+// カートテーブルの情報を入れると購入処理を行う
 function purchase_carts($db, $carts){
+  // 
   if(validate_cart_purchase($carts) === false){
     return false;
   }
@@ -139,15 +140,20 @@ function sum_carts($carts){
   return $total_price;
 }
 
+// カートテーブルの商品が購入できるか検証する
 function validate_cart_purchase($carts){
+  // カートテーブル内の商品があるかどうかチェック
   if(count($carts) === 0){
     set_error('カートに商品が入っていません。');
     return false;
   }
+  // 二次元配列から値を取り出す
   foreach($carts as $cart){
+    // 公開ステータスが1では無かったら"購入できません"
     if(is_open($cart) === false){
       set_error($cart['name'] . 'は現在購入できません。');
     }
+    // 在庫数 - カート数量が0以下なら"在庫が足りません"
     if($cart['stock'] - $cart['amount'] < 0){
       set_error($cart['name'] . 'は在庫が足りません。購入可能数:' . $cart['stock']);
     }
