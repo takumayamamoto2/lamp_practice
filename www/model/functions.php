@@ -140,4 +140,3 @@ function is_valid_upload_image($image){
   return true;
 }
 
-d;
