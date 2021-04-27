@@ -53,15 +53,15 @@ function execute_query($db, $sql, $params = array()){
 
 
 // sqlを実行 (カート数量変更）
-function execute_query_cart_amount($db, $sql, $amount, $cart_id){
+function execute_query_cart_amount($db, $sql, $cart_id,$amount){
   try{
     $statement = $db->prepare($sql);
     // SQL文のプレースホルダに値をバインド
-    $statement->bindValue(':amount',$amount, PDO::PARAM_INT);
-    $statement->bindValue(':cart_id',$cart_id, PDO::PARAM_INT);
+    if($amount > 0){$statement->bindValue(':amount',$amount, PDO::PARAM_INT);}
+    if($cart_id > 0){$statement->bindValue(':cart_id',$cart_id, PDO::PARAM_INT);}
     return $statement->execute();
   }catch(PDOException $e){
-    set_error('更新に失敗しました。');
+    set_error('更新に失敗しました。'.$e);
   }
   return false;
 }

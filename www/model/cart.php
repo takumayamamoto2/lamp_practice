@@ -87,7 +87,7 @@ function update_cart_amount($db, $cart_id, $amount){
       cart_id = :cart_id
     LIMIT 1
   ";
-  return execute_query_cart_amount($db, $sql,$amount,$cart_id);
+  return execute_query_cart_amount($db, $sql,$cart_id,$amount);
 }
 
 function delete_cart($db, $cart_id){
@@ -95,11 +95,11 @@ function delete_cart($db, $cart_id){
     DELETE FROM
       carts
     WHERE
-      cart_id = {$cart_id}
+      cart_id = :cart_id
     LIMIT 1
   ";
 
-  return execute_query($db, $sql);
+  return execute_query_cart_amount($db, $sql, $cart_id,$amount);
 }
 // カートテーブルの情報を入れると購入処理を行う
 function purchase_carts($db, $carts){
