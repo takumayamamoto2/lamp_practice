@@ -51,43 +51,30 @@ function execute_query($db, $sql, $params = array()){
   return false;
 }
 
-
-// sqlを実行 (カート数量変更）
-function execute_query_cart_amount($db, $sql, $cart_id,$amount){
+/*
+// sqlを実行 (取得なし）
+function execute_query($db, $sql, $cart_id=false,$amount=false,$stock=false,$item_id=false,$status=false){
   try{
     $statement = $db->prepare($sql);
     // SQL文のプレースホルダに値をバインド
-    if($amount > 0){$statement->bindValue(':amount',$amount, PDO::PARAM_INT);}
-    if($cart_id > 0){$statement->bindValue(':cart_id',$cart_id, PDO::PARAM_INT);}
+    if($amount !== false){$statement->bindValue(':amount',$amount, PDO::PARAM_INT);}
+    if($cart_id !== false){$statement->bindValue(':cart_id',$cart_id, PDO::PARAM_INT);}
+    if($stock !== false){$statement->bindValue(':stock',$stock, PDO::PARAM_INT);}
+    if($item_id !== false){$statement->bindValue(':item_id',$item_id, PDO::PARAM_INT);}
+    if($status !== false){$statement->bindValue(':status',$status, PDO::PARAM_INT);}
+    if($name !== false){$statement->bindValue(':name',$stock, PDO::PARAM_STR);}
+    if($price !== false){$statement->bindValue(':price',$item_id, PDO::PARAM_INT);}
+    if($filename !== false){$statement->bindValue(':filename',$filename, PDO::PARAM_STR);}
+    if($f !== false){$statement->bindValue(':filename',$filename, PDO::PARAM_STR);}
+
+
     return $statement->execute();
   }catch(PDOException $e){
     set_error('更新に失敗しました。'.$e);
   }
   return false;
 }
-
-
-// sqlを実行 (商品管理画面の数量変更）
-function execute_query_item_stock($db, $sql, $stock, $item_id){
-  try{
-    $statement = $db->prepare($sql);
-    // SQL文のプレースホルダに値をバインド
-    $statement->bindValue(':stock',$stock, PDO::PARAM_INT);
-    $statement->bindValue(':item_id',$item_id, PDO::PARAM_INT);
-    return $statement->execute();
-  }catch(PDOException $e){
-    set_error('更新に失敗しました。'.$e);
-  }
-  return false;
-}
-
-
-
-
-
-
-
-
+*/
 
 
 

@@ -85,7 +85,7 @@ function insert_item($db, $name, $price, $stock, $filename, $status){
         image,
         status
       )
-    VALUES('{$name}', {$price}, {$stock}, '{$filename}', {$status_value});
+    VALUES(':name', :price, :stock, ':filename', :status_value);
   ";
 
   return execute_query($db, $sql);
@@ -96,13 +96,13 @@ function update_item_status($db, $item_id, $status){
     UPDATE
       items
     SET
-      status = {$status}
+      status = :status
     WHERE
-      item_id = {$item_id}
+      item_id = :item_id
     LIMIT 1
   ";
   
-  return execute_query($db, $sql);
+  return execute_query($db, $sql,$item_id,$status);
 }
 
 function update_item_stock($db, $item_id, $stock){
@@ -116,7 +116,7 @@ function update_item_stock($db, $item_id, $stock){
     LIMIT 1
   ";
   
-  return execute_query_item_stock($db, $sql,$stock,$item_id);
+  return execute_query($db, $sql,$stock,$item_id);
 }
 
 function destroy_item($db, $item_id){
