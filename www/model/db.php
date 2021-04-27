@@ -46,19 +46,19 @@ function execute_query($db, $sql, $params = array()){
     $statement = $db->prepare($sql);
     return $statement->execute($params);
   }catch(PDOException $e){
-    set_error('更新に失敗しました。');
+    set_error('更新に失敗しました。'.$e);
   }
   return false;
 }
 
 
 // sqlを実行 (カート数量変更）
-function execute_query_cart_amount($db, $sql){
+function execute_query_cart_amount($db, $sql, $amount, $cart_id){
   try{
     $statement = $db->prepare($sql);
     // SQL文のプレースホルダに値をバインド
-    $statement->bindValue(1,$amount, PDO::PARAM_INT);
-    $statement->bindValue(2,$cart_id, PDO::PARAM_INT);
+    $statement->bindValue(':amount',$amount, PDO::PARAM_INT);
+    $statement->bindValue(':cart_id',$cart_id, PDO::PARAM_INT);
     return $statement->execute();
   }catch(PDOException $e){
     set_error('更新に失敗しました。');
@@ -68,15 +68,15 @@ function execute_query_cart_amount($db, $sql){
 
 
 // sqlを実行 (商品管理画面の数量変更）
-function execute_query_item_stock($db, $sql){
+function execute_query_item_stock($db, $sql, $stock, $item_id){
   try{
     $statement = $db->prepare($sql);
     // SQL文のプレースホルダに値をバインド
-    $statement->bindValue(1,$stock, PDO::PARAM_INT);
-    $statement->bindValue(2,$item_id, PDO::PARAM_INT);
+    $statement->bindValue(':stock',$stock, PDO::PARAM_INT);
+    $statement->bindValue(':item_id',$item_id, PDO::PARAM_INT);
     return $statement->execute();
   }catch(PDOException $e){
-    set_error('更新に失敗しました。');
+    set_error('更新に失敗しました。'.$e);
   }
   return false;
 }
