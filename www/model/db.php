@@ -50,31 +50,3 @@ function execute_query($db, $sql, $params = array()){
   }
   return false;
 }
-
-/*
-// sqlを実行 (取得なし）
-function execute_query($db, $sql, $cart_id=false,$amount=false,$stock=false,$item_id=false,$status=false){
-  try{
-    $statement = $db->prepare($sql);
-    // SQL文のプレースホルダに値をバインド
-    if($amount !== false){$statement->bindValue(':amount',$amount, PDO::PARAM_INT);}
-    if($cart_id !== false){$statement->bindValue(':cart_id',$cart_id, PDO::PARAM_INT);}
-    if($stock !== false){$statement->bindValue(':stock',$stock, PDO::PARAM_INT);}
-    if($item_id !== false){$statement->bindValue(':item_id',$item_id, PDO::PARAM_INT);}
-    if($status !== false){$statement->bindValue(':status',$status, PDO::PARAM_INT);}
-    if($name !== false){$statement->bindValue(':name',$stock, PDO::PARAM_STR);}
-    if($price !== false){$statement->bindValue(':price',$item_id, PDO::PARAM_INT);}
-    if($filename !== false){$statement->bindValue(':filename',$filename, PDO::PARAM_STR);}
-    if($f !== false){$statement->bindValue(':filename',$filename, PDO::PARAM_STR);}
-
-
-    return $statement->execute();
-  }catch(PDOException $e){
-    set_error('更新に失敗しました。'.$e);
-  }
-  return false;
-}
-*/
-
-
-

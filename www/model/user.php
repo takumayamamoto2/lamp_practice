@@ -13,11 +13,11 @@ function get_user($db, $user_id){
     FROM
       users
     WHERE
-      user_id = {$user_id}
+      user_id = ?
     LIMIT 1
   ";
   // sql文で取得した値を返す
-  return fetch_query($db, $sql);
+  return fetch_query($db, $sql,array($user_id));
 }
 
 // 名前からユーザーデータを取り出す（最大値一行）
@@ -31,11 +31,11 @@ function get_user_by_name($db, $name){
     FROM
       users
     WHERE
-      name = '{$name}'
+      name = ?
     LIMIT 1
   ";
   // sql文で取得した値を返す
-  return fetch_query($db, $sql);
+  return fetch_query($db, $sql, array($name));
 }
 
 // データベースから取り出したユーザーデータが無ければfalse、パスワードが違っていればfalse。
@@ -108,9 +108,9 @@ function insert_user($db, $name, $password){
   $sql = "
     INSERT INTO
       users(name, password)
-    VALUES ('{$name}', '{$password}');
+    VALUES (?, ?);
   ";
 
-  return execute_query($db, $sql);
+  return execute_query($db, $sql, array($name,$password));
 }
 
