@@ -17,6 +17,7 @@ function get_get($name){
   return '';
 }
 
+// 引数に名前が入ると名前に応じたPOSTデータを返す
 function get_post($name){
   if(isset($_POST[$name]) === true){
     return $_POST[$name];
@@ -31,32 +32,37 @@ function get_file($name){
   return array();
 }
 
-// useridを入れたら$_SESSIONのセットを返す
+// セッションに保存されている名前を入れたら$_SESSIONのセットを返す
 function get_session($name){
-  // user_idが$_SESSIONに入っているかどうかを確認
+  // 入れた名前の中身が$_SESSIONに入っているかどうかを確認
   if(isset($_SESSION[$name]) === true){
-    // user_idがセットされているセッションを返す
+    // 入れた名前で保存されているセッションを返す
     return $_SESSION[$name];
   };
   // $_SESSIONの中身が無かったら空文字を返す
   return '';
 }
 
-// 名前とuser_id(データベースから取り出したもの)を入れるとセッションにuser_idをセットする
+// 名前と値を入れるとセッションに値を保存する
 function set_session($name, $value){
   $_SESSION[$name] = $value;
 }
-
+// 引数にエラーメッセージを入れるとセッションにメッセージを保存できる
 function set_error($error){
   $_SESSION['__errors'][] = $error;
 }
 
+// セッションに保存されているエラーメッセージの取得
 function get_errors(){
+  // セッションに保存されているエラーメッセージを取得
   $errors = get_session('__errors');
+  // エラーメッセージが無かったら空の配列を返す
   if($errors === ''){
     return array();
   }
+  // セッションに空の配列を保存（次回以降のエラーメッセージの初期化）
   set_session('__errors',  array());
+  // エラーメッセージを返す
   return $errors;
 }
 
@@ -160,3 +166,40 @@ function entity_change($two_array) {
   return $two_array;
 }
 
+// トークンの生成…ランダムな文字列を生成し、セッションに保存
+function get_csrf_token(){
+  // get_random_string()はユーザー定義関数。30文字のランダムな文字列を生成
+  $token = get_random_string(30);
+  // set_session()はユーザー定義関数。'csrf_token'という名で、セッションにランダムな文字列をセット
+  set_session('csrf_token', $token);
+  return $token;
+}
+
+// トークンのチェック…ユーザーがフォームデータを送った時、POSTの中身のトークンを確認
+function is_valid_csrf_token($token){
+  // POSTで送られてきたトークンが入っていなかったらfalseを返す
+  if($token === '') {
+    return false;
+  }
+  // get_session()はユーザー定義関数
+  // ユーザーが送ったフォームデータのトークンと生成時のトークンが同じか確認
+  return $token === get_session('csrf_token');
+}
+
+// トークンがPOSTの値とセッションの値で同一であるか調べ、
+// 検証後、セッションを破棄し、違っていれば引数のページに飛ぶ
+function is_valid_csrf_token_check($redirect){
+  // ポストから受信したトークンを取得
+  $token = get_post('csrf_token');
+  // POSTのトークンとセッションに保存したトークンが同一であるか検証
+  if(is_valid_csrf_token($token) === false){
+    // 現在のセッションに保存されているトークンを破棄
+    unset($_SESSION['csrf_token']);
+    set_error('不正な処理が行われています');
+    // トークンが違っていたらその後の処理を行わずにカートページへ飛ぶ
+    redirect_to($redirect);
+  } else{
+  // 現在のセッションに保存されているトークンを破棄
+  unset($_SESSION['csrf_token']);
+  }
+}

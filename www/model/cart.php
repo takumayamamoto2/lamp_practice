@@ -27,6 +27,7 @@ function get_user_carts($db, $user_id){
   return fetch_all_query($db, $sql, array($user_id));
 }
 
+// ログインユーザーのカート情報から該当商品を取得(押したボタンの商品)
 function get_user_cart($db, $user_id, $item_id){
   $sql = "
     SELECT
@@ -55,11 +56,15 @@ function get_user_cart($db, $user_id, $item_id){
 
 }
 
+// カートの追加 クリックした商品IDが送られてきたらカートの追加処理を行う
 function add_cart($db, $user_id, $item_id ) {
+  // カート内の商品情報を取ってくる
   $cart = get_user_cart($db, $user_id, $item_id);
+  // カート内にクリックした商品が無かったらINSERTで追加
   if($cart === false){
     return insert_cart($db, $user_id, $item_id);
   }
+  // カート内にクリックした商品と同一商品があれば、クリックした商品amount(数量)に+1
   return update_cart_amount($db, $cart['cart_id'], $cart['amount'] + 1);
 }
 

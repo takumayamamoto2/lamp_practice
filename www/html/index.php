@@ -1,4 +1,6 @@
 <?php
+/* 商品一覧ページ */
+
 require_once '../conf/const.php';
 require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'user.php';
@@ -19,6 +21,7 @@ $user = get_login_user($db);
 $items = get_open_items($db);
 // 特殊文字をHTMLエンティティにする
 $items = entity_change($items);
-
+// トークンを取得する
+get_csrf_token();
 // パスを指定して商品一覧ページのファイルを読み込む
 include_once VIEW_PATH . 'index_view.php';

