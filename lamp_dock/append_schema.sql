@@ -5,7 +5,6 @@
 CREATE TABLE purchase (
   order_id int(11) NOT NULL AUTO_INCREMENT comment '注文番号',
   user_id int(11) NOT NULL comment 'ユーザーID',
-  quantity int(11) NOT NULL comment '購入数',
   createdate datetime NOT NULL comment '購入日時',
   primary key(order_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -16,6 +15,7 @@ CREATE TABLE order_details (
   item_id int(11) NOT NULL comment '商品のID',
   item_name varchar(100) NOT NULL comment '商品の名前',
   price int(11) NOT NULL comment '購入時商品の価格',
+  quantity int(11) NOT NULL comment '購入数',
   primary key(order_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
