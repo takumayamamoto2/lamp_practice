@@ -1,7 +1,7 @@
 -- 課題2－1 新規追加テーブル
 
 
--- 購入日時テーブル 
+-- 購入履歴テーブル 
 CREATE TABLE purchase (
   order_id int(11) NOT NULL AUTO_INCREMENT comment '注文番号',
   user_id int(11) NOT NULL comment 'ユーザーID',
@@ -9,7 +9,7 @@ CREATE TABLE purchase (
   primary key(order_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 注文明細テーブル 
+-- 購入時の商品データテーブル 
 CREATE TABLE order_details (
   order_id int(11) NOT NULL AUTO_INCREMENT comment '注文番号',
   item_id int(11) NOT NULL comment '商品のID',
