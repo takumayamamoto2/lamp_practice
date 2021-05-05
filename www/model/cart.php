@@ -108,7 +108,7 @@ function delete_cart($db, $cart_id){
 }
 // カートテーブルの情報を入れると購入処理を行う
 function purchase_carts($db, $carts){
-  // 
+  // カートテーブルの情報を入れるとカートの中身の検証を行う
   if(validate_cart_purchase($carts) === false){
     return false;
   }
@@ -122,6 +122,11 @@ function purchase_carts($db, $carts){
     }
   }
   
+  // カート情報を入れて、ループで順番にpurchase、order_detailsテーブルに購入情報を書き込む
+  foreach($carts as $cart){
+    order_details_transaction($db,$cart['user_id'],$cart['item_id'],$cart['name'],$cart['price'],$cart['amount']);
+  }
+
   delete_user_carts($db, $carts[0]['user_id']);
 }
 
@@ -169,3 +174,40 @@ function validate_cart_purchase($carts){
   return true;
 }
 
+
+// 購入時の商品データテーブル更新文
+function insert_order_details($db,$item_id,$item_name,$price,$quantity){
+  $sql = "
+  INSERT INTO 
+  order_details(item_id,item_name,price,quantity)
+  VALUES (?, ?, ?, ?)
+  ";
+
+  return execute_query($db,$sql,array($item_id,$item_name,$price,$quantity));
+}
+
+// 購入履歴テーブル更新文
+function insert_purchase($db,$user_id){
+  $sql = "
+  INSERT INTO 
+  purchase(order_id,user_id)
+  VALUES (?, ?)
+  ";
+
+  // 直前のINSERTで使用した、オートインクリメントの値を取得
+  $order_id = $db -> lastInsertId();
+  return execute_query($db,$sql,array($order_id,$user_id));
+}
+
+// カート情報をトランザクションでpurchase、order_detailsテーブルに購入情報を書き込む
+function order_details_transaction($db,$user_id,$item_id,$item_name,$price,$quantity){
+  $db->beginTransaction();
+  if(insert_order_details($db,$item_id,$item_name,$price,$quantity) 
+    && insert_purchase($db,$user_id)){
+    $db->commit();
+    return true;
+  }
+  $db->rollback();
+  return false;
+  
+}
