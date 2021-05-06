@@ -121,12 +121,11 @@ function purchase_carts($db, $carts){
       set_error($cart['name'] . 'の購入に失敗しました。');
     }
   }
-  
-  // カート情報を入れて、ループで順番にpurchase、order_detailsテーブルに購入情報を書き込む
-  foreach($carts as $cart){
-    order_details_transaction($db,$cart['user_id'],$cart['item_id'],$cart['name'],$cart['price'],$cart['amount']);
+  // カート情報を入れてpurchase、order_detailsテーブルに購入情報を書き込む
+  if(order_details_transaction($db,$carts) === false){
+    return false;
   }
-
+  // カート情報の消去
   delete_user_carts($db, $carts[0]['user_id']);
 }
 
@@ -175,35 +174,41 @@ function validate_cart_purchase($carts){
 }
 
 
-// 購入時の商品データテーブル更新文
-function insert_order_details($db,$item_id,$item_name,$price,$quantity){
-  $sql = "
-  INSERT INTO 
-  order_details(item_id,item_name,price,quantity)
-  VALUES (?, ?, ?, ?)
-  ";
-
-  return execute_query($db,$sql,array($item_id,$item_name,$price,$quantity));
-}
-
 // 購入履歴テーブル更新文
 function insert_purchase($db,$user_id){
   $sql = "
   INSERT INTO 
-  purchase(order_id,user_id)
-  VALUES (?, ?)
+  purchase(user_id)
+  VALUES (?)
   ";
 
-  // 直前のINSERTで使用した、オートインクリメントの値を取得
-  $order_id = $db -> lastInsertId();
-  return execute_query($db,$sql,array($order_id,$user_id));
+  return execute_query($db,$sql,array($user_id));
 }
 
-// カート情報をトランザクションでpurchase、order_detailsテーブルに購入情報を書き込む
-function order_details_transaction($db,$user_id,$item_id,$item_name,$price,$quantity){
+// 購入時の商品データテーブル更新文
+function insert_order_details($db,$order_id,$item_id,$item_name,$price,$quantity){
+  $sql = "
+  INSERT INTO 
+  order_details(order_id,item_id,item_name,price,quantity)
+  VALUES (?, ?, ?, ?, ?)
+  ";
+
+  return execute_query($db,$sql,array($order_id,$item_id,$item_name,$price,$quantity));
+}
+
+// トランザクションでpurchase、order_detailsテーブルに購入情報を書き込む
+function order_details_transaction($db,$carts){
   $db->beginTransaction();
-  if(insert_order_details($db,$item_id,$item_name,$price,$quantity) 
-    && insert_purchase($db,$user_id)){
+  // purchaseテーブルに購入情報を書き込む
+  if(insert_purchase($db,$carts[0]['user_id']) !== FALSE){
+    // 直前のINSERTで使用した、オートインクリメントの値を取得
+    $order_id = $db -> lastInsertId();
+    // ループでorder_detailsテーブルに購入情報を書き込む
+    foreach($carts as $cart){
+      if(insert_order_details($db,$order_id,$cart['item_id'],$cart['name'],$cart['price'],$cart['amount']) === FALSE){
+        return false;
+      }
+    }
     $db->commit();
     return true;
   }
