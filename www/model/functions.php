@@ -105,7 +105,9 @@ function save_image($image, $filename){
 }
 
 function delete_image($filename){
+  // file_exists…ファイルが存在するかどうかを調べる
   if(file_exists(IMAGE_DIR . $filename) === true){
+    // unlink…名前を削除し、場合によってはそれが参照しているファイルも削除する
     unlink(IMAGE_DIR . $filename);
     return true;
   }
