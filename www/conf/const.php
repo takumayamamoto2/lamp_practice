@@ -20,6 +20,8 @@ define('LOGOUT_URL', '/logout.php');
 define('HOME_URL', '/index.php');
 define('CART_URL', '/cart.php');
 define('FINISH_URL', '/finish.php');
+define('PURCHASE_URL', '/purchase.php');
+define('PURCHASE_DETAILS_URL', '/purcase_details.php');
 define('ADMIN_URL', '/admin.php');
 
 define('REGEXP_ALPHANUMERIC', '/\A[0-9a-zA-Z]+\z/');

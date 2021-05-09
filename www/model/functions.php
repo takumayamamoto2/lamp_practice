@@ -153,7 +153,18 @@ function entity_str($str){
   return  htmlspecialchars($str,ENT_QUOTES,'UTF-8');
 }
 
-// 特殊文字をHTMLエンティティに変換(商品は二次元配列の為、
+// 一次元配列の特殊文字をHTMLエンティティに変換
+// 一次元配列の値を取り出して変換する
+function entity_change_one($one_array) {
+  // 一次元配列の値を取り出す
+  foreach ($one_array as $key => $value) {
+      // 特殊文字をHTMLエンティティに変換
+      $one_array[$value] = entity_str($value);
+  }
+  return $one_array;
+}
+
+// 二次元配列の特殊文字をHTMLエンティティに変換
 // 一次元配列の値のみを取り出して変換する)
 function entity_change($two_array) {
   // 二次元配列を一次元配列にする
