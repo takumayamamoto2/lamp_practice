@@ -40,9 +40,27 @@
           </div>
         </div>
       <?php } ?>
-      </div>
+      
+        <h1>人気ランキング</h1>
+        <div class="row">
+          <?php foreach($rankings as $ranking){ ?>
+          <div class="col-12 item">
+            <div class="card h-100 text-center">
+            <?php $rank++; ?>
+            <h2><?php print $rank ; ?>位</h2>
+              <div class="card-header">
+                <?php print $ranking['name'] ; ?>
+              </div>
+              <figure class="card-body">
+              <img class="card-img" src="<?php print(IMAGE_PATH . $ranking['image']); ?>">
+              <figcaption>
+              </figcaption>
+              </div>
+            </div>
+          <?php } ?>
+          </div>
+        </div>
     </div>
   </div>
-  
 </body>
 </html>

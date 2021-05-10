@@ -5,6 +5,7 @@ require_once '../conf/const.php';
 require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'user.php';
 require_once MODEL_PATH . 'item.php';
+require_once MODEL_PATH . 'purchase_details.php';
 
 session_start();
 
@@ -21,6 +22,11 @@ $user = get_login_user($db);
 $items = get_open_items($db);
 // 特殊文字をHTMLエンティティにする
 $items = entity_change($items);
+// ランキングの商品情報を取得
+$rankings = get_items_ranking($db);
+// 特殊文字をHTMLエンティティにする
+$rankings = entity_change($rankings);
+
 // トークンを取得する
 get_csrf_token();
 // パスを指定して商品一覧ページのファイルを読み込む
