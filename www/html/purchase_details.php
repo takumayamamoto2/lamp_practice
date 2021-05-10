@@ -22,10 +22,20 @@ $user = get_login_user($db);
 
 // 押されたボタンの注文番号を取得
 $order_id = get_post('order_id');
+// 購入履歴＆明細をデータベースから取得
+if(is_admin($user) === false){
+    // 一般ユーザーであればユーザーID紐付けで検索
 // order_idを使って購入明細情報の取得
 $purchase_details = get_purchase_details($db,$user['user_id'],$order_id);
 // order_idを使って購入履歴の注文番号一つのみを取得
 $purchase_detail = get_purchase_detail($db,$user['user_id'],$order_id);
+} else {
+    // 管理者なら全検索
+// order_idを使って購入明細情報の取得
+$purchase_details = get_purchase_details_admin($db,$order_id);
+// order_idを使って購入履歴の注文番号一つのみを取得
+$purchase_detail = get_purchase_detail_admin($db,$order_id);
+}
 
 // 二次元配列の特殊文字をHTMLエンティティにする
 $purchase_details = entity_change($purchase_details);
