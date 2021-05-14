@@ -11,25 +11,30 @@
     <div class="container">
         <h1>購入明細</h1>
         <?php include VIEW_PATH . 'templates/messages.php'; ?>
-        <?php if(count($purchase_detail) > 0){ ?>
-          <table class="table table-bordered text-center">
-              <thead class="thead-light">
-                <tr>
-                  <th>注文番号</th>
-                  <th>購入日時</th>
-                  <th>該当の注文の合計金額</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>  
-                  <td><?php print $purchase_detail['order_id'];?></td>
-                  <td><?php print $purchase_detail['createdate'];?></td>
-                  <td><?php print number_format($purchase_detail['price']).'円';?></td>
-                </tr>
-              </tbody>
-          </table>
+        <?php if(count($purchase_history) > 0){ ?>
+          <?php foreach($purchase_history as $value){ ?>
+            <?php if($value['order_id'] === $order_id){ ?>
+            <table class="table table-bordered text-center">
+                <thead class="thead-light">
+                  <tr>
+                    <th>注文番号</th>
+                    <th>購入日時</th>
+                    <th>該当の注文の合計金額</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>  
+                    <td><?php print $value['order_id'];?></td>
+                    <td><?php print $value['createdate'];?></td>
+                    <td><?php print number_format($value['price']).'円';?></td>
+                  </tr>
+                </tbody>
+            </table>
+            <?php } ?>
+          <?php } ?>
         <?php } else { print '購入履歴はありません';} ?>
         
+
         <?php if(count($purchase_details) > 0){ ?>
           <table class="table table-bordered text-center">
               <thead class="thead-light">
