@@ -27,20 +27,20 @@ if(is_admin($user) === false){
     // 一般ユーザーであればユーザーID紐付けで検索
 // order_idを使って購入明細情報の取得
 $purchase_details = get_purchase_details($db,$user['user_id'],$order_id);
-// order_idを使って購入履歴の注文番号一つのみを取得
-$purchase_detail = get_purchase_detail($db,$user['user_id'],$order_id);
+// user_idを使って購入履歴を取得
+$purchase_history = get_purchase_history($db,$user['user_id']);
 } else {
     // 管理者なら全検索
 // order_idを使って購入明細情報の取得
 $purchase_details = get_purchase_details_admin($db,$order_id);
-// order_idを使って購入履歴の注文番号一つのみを取得
-$purchase_detail = get_purchase_detail_admin($db,$order_id);
+// 購入履歴を取得
+$purchase_history = get_purchase_history_admin($db);
 }
 
-// 二次元配列の特殊文字をHTMLエンティティにする
+// 購入明細の特殊文字をHTMLエンティティにする
 $purchase_details = entity_change($purchase_details);
-// 一次元配列の特殊文字をHTMLエンティティにする
-$purchase_detail = entity_change_one($purchase_detail);
+// 上に表示する購入履歴の特殊文字をHTMLエンティティにする
+$purchase_history = entity_change($purchase_history);
 
 // トークンを取得する
 get_csrf_token();
